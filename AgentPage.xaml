@@ -1,0 +1,138 @@
+﻿<Page x:Class="RafikovaGlazkiSave.AgentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RafikovaGlazkiSave"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Список агентов" FontFamily="Century Gothic"
+      IsVisibleChanged="Page_IsVisibleChanged">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+                <TextBlock TextAlignment="Center"
+                           Width="25" FontSize="15"></TextBlock>   
+                <TextBox Name="TBoxSearch" TextChanged="TBoxSearch_TextChanged"
+                         Width="250" FontSize="15"></TextBox>
+
+                <TextBlock TextAlignment="Center"
+                           Width="25" FontSize="15"></TextBlock>
+                    <ComboBox Name="ComboType2" SelectionChanged="ComboType2_SelectionChanged"
+                          FontSize="15" Width="200">
+                        <TextBlock>Сортировка</TextBlock>   
+                        <TextBlock>Наименование по возрастанию</TextBlock>
+                        <TextBlock>Наименование по убыванию</TextBlock>
+                        <TextBlock>Скидка по возрастанию</TextBlock>
+                        <TextBlock>Скидка по убыванию</TextBlock>
+                        <TextBlock>Приоритет по возрастанию</TextBlock>
+                        <TextBlock>Приоритет по убыванию</TextBlock>
+                    </ComboBox>
+
+                <TextBlock TextAlignment="Center"
+                           Width="25" FontSize="15"></TextBlock>
+                <ComboBox Name="ComboType" SelectionChanged="ComboType_SelectionChanged"
+                          FontSize="15" Width="200">
+                    <TextBlock>Все типы</TextBlock>
+                    <TextBlock>МФО</TextBlock>
+                    <TextBlock>ООО</TextBlock>
+                    <TextBlock>ЗАО</TextBlock>
+                    <TextBlock>МКК</TextBlock>
+                    <TextBlock>ОАО</TextBlock>
+                    <TextBlock>ПАО</TextBlock>
+                </ComboBox>
+                
+            </StackPanel>
+        </WrapPanel>
+        
+        <ListView Name="AgentListView" Grid.Row="2" SelectionChanged="AgentListView_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Background="{Binding FontStyle}">
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="375"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Width="200" Grid.Column="0" Grid.RowSpan="4"
+                               Stretch="UniformToFill" HorizontalAlignment="Center">
+                            <Image.Source>
+                                <Binding Path="Logo">
+                                    <Binding.TargetNullValue>
+                                        <ImageSource>
+                                            Resources/picture.png
+                                        </ImageSource>
+                                    </Binding.TargetNullValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                            <TextBlock Text="{Binding AgentType.Title}" FontSize="20" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Text=" | " FontSize="20"></TextBlock>
+                            <TextBlock Text="{Binding Title}" Grid.Column="1" Grid.Row="0" FontSize="20"></TextBlock>
+                        </StackPanel>
+
+                        <TextBlock Text="Скидка" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Center" FontSize="20"></TextBlock>
+                        <TextBlock Text="{Binding Discount}" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" FontSize="20"></TextBlock>
+                        <TextBlock Text="       %" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" FontSize="20"></TextBlock>
+
+                        <StackPanel Grid.Column="1" Grid.Row="2">
+                            <TextBlock Text="{Binding Phone}" Grid.Row="3" HorizontalAlignment="Left" FontSize="16"></TextBlock>
+                            <TextBlock Text="{Binding Prod, StringFormat=Продажи за год: {0}}" Grid.Row="4" HorizontalAlignment="Left" FontSize="16"></TextBlock>
+                            <TextBlock Text="{Binding Priority, StringFormat = Приоритетность: {0}}" Grid.Row="5" HorizontalAlignment="Left" FontSize="16"></TextBlock>
+                        </StackPanel>
+                       
+                        <StackPanel Grid.Column="3" Grid.Row="3" Orientation="Horizontal">
+                            <Button Name="EditButton" Content="Редактировать" Margin="2" Click="EditButton_Click"></Button>
+                        </StackPanel>
+                       
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock Name="TBCount" FontSize="20" Height="30"></TextBlock>
+            <TextBlock Name="TBAllRecords" FontSize="20" Height="30"></TextBlock>
+            <Button Name="LeftDirButton" Content="&lt;" Width="20" Height="30"
+                    Click="LeftDirButton_Click"></Button>
+            <ListBox FontSize="20" Name="PageListBox" MouseUp="PageListBox_MouseUp">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <Button Name="RightDirButton" Content="&gt;" Width="20" Height="30"
+                    Click="RightDirButton_Click"></Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Button Content="Добавить"  Name="AddBtn" Click="AddBtn_Click" Margin="5"></Button>
+            <Button Content="Изменить приоритет на..."  Name="ChangePriorityButton" Click="ChangePriorityButton_Click"></Button>
+        </StackPanel>
+
+        
+
+    </Grid>
+</Page>
